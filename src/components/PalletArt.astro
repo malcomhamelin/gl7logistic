@@ -1,0 +1,102 @@
+---
+// Illustration isométrique d'une palette, construite à l'échelle à partir de ses dimensions (mm).
+interface Props {
+  length?: number;
+  width?: number;
+  build?: 'block' | 'light';
+  stack?: number;
+  class?: string;
+  label?: string;
+}
+
+const { length = 1200, width = 800, build = 'block', stack = 1, class: className, label } = Astro.props;
+
+type Box = { x: number; y: number; z: number; w: number; d: number; h: number; layer: number };
+
+const C = Math.cos(Math.PI / 6);
+const S = 0.5;
+const project = (x: number, y: number, z: number): [number, number] => [(x - y) * C, (x + y) * S - z];
+
+function pallet(L: number, W: number, z0: number): { boxes: Box[]; height: number } {
+  const boxes: Box[] = [];
+  const add = (b: Omit<Box, 'z'> & { z: number }) => boxes.push({ ...b, z: b.z + z0 });
+  const light = build === 'light';
+  const t = light ? 15 : 22;
+  const bh = light ? 90 : 78;
+  const bx = light ? 100 : 145;
+  const by = 100;
+  const xs = [0, (L - bx) / 2, L - bx];
+  const ys = [0, (W - by) / 2, W - by];
+  let z = 0;
+
+  if (!light) {
+    ys.forEach((y) => add({ x: 0, y, z, w: L, d: by, h: t, layer: 0 }));
+    z += t;
+  }
+  xs.forEach((x) => ys.forEach((y) => add({ x, y, z, w: bx, d: by, h: bh, layer: 1 })));
+  z += bh;
+  xs.forEach((x) => add({ x, y: 0, z, w: bx, d: W, h: t, layer: 2 }));
+  z += t;
+  const n = light ? 4 : 5;
+  const tw = light ? 90 : 100;
+  const tt = light ? 12 : 22;
+  for (let i = 0; i < n; i++) add({ x: 0, y: (i * (W - tw)) / (n - 1), z, w: L, d: tw, h: tt, layer: 3 });
+  z += tt;
+  return { boxes, height: z };
+}
+
+const all: Box[] = [];
+let z = 0;
+for (let i = 0; i < stack; i++) {
+  const p = pallet(length, width, z);
+  p.boxes.forEach((b) => all.push({ ...b, layer: b.layer + i * 10 }));
+  z += p.height;
+}
+
+all.sort((a, b) => a.layer - b.layer || a.x + a.w / 2 + a.y + a.d / 2 - (b.x + b.w / 2 + b.y + b.d / 2));
+
+const fmt = (pts: [number, number][]) => pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+const faces = all.map(({ x, y, z, w, d, h }) => {
+  const x1 = x + w, y1 = y + d, z1 = z + h;
+  return {
+    top: fmt([project(x, y, z1), project(x1, y, z1), project(x1, y1, z1), project(x, y1, z1)]),
+    right: fmt([project(x1, y, z), project(x1, y1, z), project(x1, y1, z1), project(x1, y, z1)]),
+    front: fmt([project(x, y1, z), project(x1, y1, z), project(x1, y1, z1), project(x, y1, z1)]),
+  };
+});
+
+const xsAll = [project(0, width, 0)[0], project(length, 0, 0)[0]];
+const minY = project(0, 0, z)[1];
+const maxY = project(length, width, 0)[1];
+const pad = 12;
+const viewBox = `${(xsAll[0] - pad).toFixed(0)} ${(minY - pad).toFixed(0)} ${(xsAll[1] - xsAll[0] + pad * 2).toFixed(0)} ${(maxY - minY + pad * 2).toFixed(0)}`;
+---
+
+<svg
+  class:list={['pallet-art', className]}
+  viewBox={viewBox}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g stroke="#8a6236" stroke-width="2" stroke-linejoin="round">
+    {
+      faces.map((f) => (
+        <>
+          <polygon points={f.right} fill="#c49663" />
+          <polygon points={f.front} fill="#a97c49" />
+          <polygon points={f.top} fill="#e8cba3" />
+        </>
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  .pallet-art {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

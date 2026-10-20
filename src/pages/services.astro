@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import PalletArt from '../components/PalletArt.astro';
+import { company } from '../config';
+---
+
+<Base
+  title="Services palettes : vente, rachat, réparation, livraison"
+  description="Vente de palettes neuves et d'occasion, rachat et enlèvement de palettes usagées, réparation et reconditionnement, livraison en Île-de-France. GL7 Logistic, Champlan (91) et Orly (94)."
+>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Services</nav>
+      <h1>Nos services</h1>
+      <p class="lead">
+        Acheter des palettes, se débarrasser de celles qui s'accumulent, faire réparer celles qui sont abîmées : nous gérons
+        tout le cycle de vie de vos palettes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="vente">
+    <div class="container row">
+      <div>
+        <span class="icon-badge"><Icon name="pallet" /></span>
+        <h2>Vente de palettes neuves et d'occasion</h2>
+        <p>
+          Nous disposons d'un stock permanent de palettes dans nos dépôts de Champlan et d'Orly. Palettes Europe EPAL ou non
+          marquées, demi-palettes, 100×120, palettes légères, formats spéciaux et palettes traitées NIMP 15 pour l'export.
+        </p>
+        <ul class="check-list">
+          <li>Neuves, 1er choix, 2e choix ou reconditionnées selon votre budget</li>
+          <li>De quelques unités au camion complet</li>
+          <li>Approvisionnement ponctuel ou livraisons régulières</li>
+          <li>Prix dégressifs selon les volumes</li>
+        </ul>
+        <a class="btn btn-primary" href="/palettes">Voir les palettes</a>
+      </div>
+      <div class="art"><PalletArt stack={3} /></div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="rachat">
+    <div class="container row reverse">
+      <div>
+        <span class="icon-badge"><Icon name="cash" /></span>
+        <h2>Rachat et enlèvement de palettes</h2>
+        <p>
+          Les palettes vides prennent de la place et finissent souvent jetées. Nous les rachetons selon leur format et leur
+          état, et nous venons les chercher sur votre site.
+        </p>
+        <ul class="check-list">
+          <li>Palettes Europe, demi-palettes, 100×120 et formats divers</li>
+          <li>Palettes en bon état rachetées, palettes abîmées reprises</li>
+          <li>Enlèvement ponctuel ou passage régulier</li>
+        </ul>
+        <a class="btn btn-primary" href="/rachat-palettes">Proposer mes palettes</a>
+      </div>
+      <div class="card stat">
+        <Icon name="cycle" size={40} />
+        <p>
+          Chaque palette rachetée est triée, réparée si besoin, puis <strong>remise en circulation</strong> chez nos clients.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reparation">
+    <div class="container row">
+      <div>
+        <span class="icon-badge"><Icon name="wrench" /></span>
+        <h2>Réparation et reconditionnement</h2>
+        <p>
+          Une planche cassée ou un dé fendu ne condamnent pas une palette. Nous remplaçons les éléments abîmés pour qu'elle
+          retrouve un usage normal, à moindre coût qu'une palette neuve.
+        </p>
+        <ul class="check-list">
+          <li>Remplacement des planches, dés et semelles endommagés</li>
+          <li>Tri par état après réparation</li>
+          <li>Réparation de votre propre parc de palettes : nous consulter</li>
+        </ul>
+      </div>
+      <div class="card steps">
+        <ol>
+          <li><strong>Contrôle</strong> de chaque palette</li>
+          <li><strong>Démontage</strong> des éléments abîmés</li>
+          <li><strong>Remplacement</strong> par du bois de réemploi</li>
+          <li><strong>Tri</strong> et stockage par catégorie</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="livraison">
+    <div class="container row reverse">
+      <div>
+        <span class="icon-badge"><Icon name="truck" /></span>
+        <h2>Livraison et retrait au dépôt</h2>
+        <p>
+          Nous livrons vos palettes sur votre site dans l'Essonne, le Val-de-Marne et toute l'Île-de-France. Vous pouvez
+          aussi venir les retirer directement à l'un de nos dépôts.
+        </p>
+        <ul class="check-list">
+          <li>Livraison à la date convenue</li>
+          <li>Retrait possible à Champlan ou à Orly</li>
+          <li>Livraison et reprise combinables en un seul passage</li>
+        </ul>
+        <a class="btn btn-ghost" href="/zones/ile-de-france">Voir la zone desservie</a>
+      </div>
+      <div class="card depots">
+        {
+          company.depots.map((d) => (
+            <div>
+              <Icon name="warehouse" />
+              <span>
+                <strong>{d.name}</strong>
+                <br />
+                {d.postalCode} {d.city}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .row.reverse > :first-child {
+    order: 2;
+  }
+  .row p {
+    max-width: 620px;
+  }
+  .art {
+    max-width: 380px;
+    justify-self: center;
+    width: 100%;
+  }
+  .stat {
+    text-align: center;
+    padding: 40px;
+    color: var(--violet);
+  }
+  .stat p {
+    color: var(--ink-2);
+    margin: 16px 0 0;
+    font-size: 1.1rem;
+  }
+  .steps ol {
+    margin: 0;
+    padding-left: 22px;
+    display: grid;
+    gap: 14px;
+  }
+  .steps li::marker {
+    color: var(--violet);
+    font-weight: 800;
+  }
+  .depots {
+    display: grid;
+    gap: 20px;
+  }
+  .depots div {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .depots :global(svg) {
+    color: var(--violet);
+    flex: none;
+  }
+  .depots strong {
+    color: var(--ink);
+  }
+  @media (max-width: 900px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .row.reverse > :first-child {
+      order: 0;
+    }
+  }
+</style>

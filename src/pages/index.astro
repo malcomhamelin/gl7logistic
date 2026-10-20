@@ -1,0 +1,456 @@
+---
+import Base from '../layouts/Base.astro';
+import PalletArt from '../components/PalletArt.astro';
+import PaletteCard from '../components/PaletteCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { company } from '../config';
+import { palettes } from '../data/palettes';
+
+const featured = palettes.filter((p) => p.featured);
+
+const services = [
+  {
+    icon: 'pallet',
+    title: 'Vente de palettes',
+    text: "Palettes neuves et d'occasion, Europe, demi-palettes, 100×120, formats spéciaux. À l'unité ou au camion complet.",
+    href: '/services#vente',
+  },
+  {
+    icon: 'cash',
+    title: 'Rachat et enlèvement',
+    text: "Vos palettes vides encombrent votre site ? Nous venons les chercher et nous vous les rachetons selon leur état.",
+    href: '/rachat-palettes',
+  },
+  {
+    icon: 'wrench',
+    title: 'Réparation',
+    text: "Remplacement des planches et dés abîmés : vos palettes repartent en circulation au lieu de finir en déchet.",
+    href: '/services#reparation',
+  },
+  {
+    icon: 'truck',
+    title: 'Livraison',
+    text: "Livraison sur votre site en Île-de-France, ou retrait directement à nos dépôts de Champlan et d'Orly.",
+    href: '/services#livraison',
+  },
+] as const;
+
+const steps = [
+  { n: '1', title: 'Vous nous décrivez votre besoin', text: 'Par le formulaire ou par téléphone : type de palette, quantité, lieu et délai.' },
+  { n: '2', title: 'Nous vous envoyons un devis', text: `Un prix clair, adapté à vos volumes, sous ${company.responseTime}.` },
+  { n: '3', title: 'Livraison ou enlèvement', text: 'Nous livrons vos palettes ou venons récupérer les vôtres, à la date convenue.' },
+];
+---
+
+<Base
+  title="GL7 Logistic | Palettes bois neuves et d'occasion en Île-de-France"
+  description="Achat, vente, réparation et rachat de palettes en bois : Europe 80×120, demi-palettes, 100×120, NIMP 15. Dépôts à Champlan (91) et Orly (94). Devis rapide."
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Palettes bois · Essonne &amp; Val-de-Marne</span>
+        <h1>Vos palettes en bois, <span class="grad-text">neuves ou d'occasion</span>, livrées en Île-de-France.</h1>
+        <p class="lead">
+          GL7 Logistic achète, vend, répare et rachète des palettes pour les professionnels. Deux dépôts au sud de Paris,
+          à Champlan et à Orly, pour vous livrer vite.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/devis">Demander un devis <Icon name="arrow" size={18} /></a>
+          <a class="btn btn-ghost" href="/rachat-palettes">Vendre mes palettes</a>
+        </div>
+        <ul class="hero-points">
+          <li><Icon name="clock" size={18} /> Réponse sous {company.responseTime}</li>
+          <li><Icon name="tag" size={18} /> Prix dégressifs selon volume</li>
+          <li><Icon name="truck" size={18} /> Livraison et enlèvement</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-blob"></div>
+        <PalletArt length={1200} width={800} stack={3} class="hero-stack" />
+        <span class="float f1"><Icon name="shield" size={16} /> EPAL</span>
+        <span class="float f2"><Icon name="globe" size={16} /> NIMP 15</span>
+        <span class="float f3"><Icon name="cycle" size={16} /> Neuf &amp; occasion</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deux publics -->
+  <section class="section split-section">
+    <div class="container grid grid-2">
+      <a class="split card" href="/palettes">
+        <span class="icon-badge"><Icon name="pallet" /></span>
+        <h2>Vous cherchez des palettes ?</h2>
+        <p>
+          Palettes Europe, demi-palettes, 100×120, palettes légères ou formats spéciaux, en neuf ou en occasion trié.
+          Nous trouvons la palette qui correspond à votre usage et à votre budget.
+        </p>
+        <span class="link">Voir nos palettes <Icon name="arrow" size={18} /></span>
+      </a>
+      <a class="split card" href="/rachat-palettes">
+        <span class="icon-badge"><Icon name="cash" /></span>
+        <h2>Vous avez des palettes en trop ?</h2>
+        <p>
+          Entrepôts, commerces, chantiers : nous rachetons et enlevons vos palettes vides, même abîmées. Vous libérez de la
+          place et elles retrouvent une seconde vie.
+        </p>
+        <span class="link">Proposer mes palettes <Icon name="arrow" size={18} /></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Produits -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="head-row">
+        <div class="section-head">
+          <span class="eyebrow">Nos palettes</span>
+          <h2>Les formats les plus demandés</h2>
+          <p>Chaque palette d'occasion est triée selon son état. Vous choisissez le niveau de qualité dont vous avez besoin.</p>
+        </div>
+        <a class="btn btn-ghost" href="/palettes">Tout le catalogue</a>
+      </div>
+      <div class="grid grid-4">
+        {featured.map((p) => <PaletteCard palette={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Nos services</span>
+        <h2>Un seul interlocuteur pour toutes vos palettes</h2>
+        <p>De l'achat à la reprise, nous gérons tout le cycle de vie de vos palettes.</p>
+      </div>
+      <div class="grid grid-4">
+        {
+          services.map((s) => (
+            <a class="card service" href={s.href}>
+              <span class="icon-badge">
+                <Icon name={s.icon} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Étapes -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2>Un devis en trois étapes</h2>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s) => (
+            <li>
+              <span class="num">{s.n}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="center-row">
+        <a class="btn btn-primary" href="/devis">Commencer ma demande <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Économie circulaire -->
+  <section class="section">
+    <div class="container circular">
+      <div>
+        <span class="eyebrow">Économie circulaire</span>
+        <h2>Une palette réparée, c'est une palette qui ne part pas au broyage</h2>
+        <p class="lead">
+          La palette bois est l'un des emballages les plus réutilisés. En France, environ 9 palettes collectées sur 10 sont
+          remises sur le marché, revendues telles quelles ou après réparation.
+        </p>
+        <ul class="check-list">
+          <li>Des palettes d'occasion nettement moins chères que le neuf</li>
+          <li>Moins de bois neuf consommé, moins de déchets sur vos sites</li>
+          <li>Les palettes irréparables sont orientées vers le recyclage</li>
+        </ul>
+        <a class="btn btn-ghost" href="/services#reparation">Notre atelier de réparation</a>
+      </div>
+      <div class="cycle card">
+        <ol>
+          <li><Icon name="truck" /><span><strong>Collecte</strong> sur votre site</span></li>
+          <li><Icon name="pallet" /><span><strong>Tri</strong> par format et par état</span></li>
+          <li><Icon name="wrench" /><span><strong>Réparation</strong> des éléments abîmés</span></li>
+          <li><Icon name="cycle" /><span><strong>Remise en circulation</strong> chez nos clients</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dépôts -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Zone d'intervention</span>
+        <h2>Deux dépôts au sud de Paris</h2>
+        <p>
+          Implantés près de l'A6, de l'A10 et de Rungis, nous intervenons dans l'Essonne, le Val-de-Marne et toute l'Île-de-France.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        {
+          company.depots.map((d) => (
+            <div class="card depot">
+              <span class="icon-badge">
+                <Icon name="warehouse" />
+              </span>
+              <h3>{d.name}</h3>
+              <p>
+                {d.street && (<>{d.street}<br /></>)}
+                {d.postalCode} {d.city} ({d.department})
+              </p>
+              <a href={d.mapsUrl} target="_blank" rel="noopener">Itinéraire <Icon name="arrow" size={16} /></a>
+            </div>
+          ))
+        }
+        <div class="card depot">
+          <span class="icon-badge"><Icon name="pin" /></span>
+          <h3>Toute l'Île-de-France</h3>
+          <p>Paris, 77, 78, 91, 92, 93, 94, 95 : livraison et enlèvement selon volume.</p>
+          <a href="/zones/ile-de-france">Voir les zones <Icon name="arrow" size={16} /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(48px, 7vw, 96px);
+    background:
+      radial-gradient(60% 80% at 100% 0%, #efe9ff 0%, transparent 60%),
+      radial-gradient(50% 70% at 0% 100%, #eaf1ff 0%, transparent 60%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-copy .lead {
+    max-width: 560px;
+    margin-bottom: 28px;
+  }
+  .hero-points {
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    font-weight: 650;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .hero-points li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-points :global(svg) {
+    color: var(--violet);
+  }
+  .hero-visual {
+    position: relative;
+    padding: 40px 32px;
+  }
+  .hero-blob {
+    position: absolute;
+    inset: 8% 4%;
+    border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
+    background: var(--grad);
+    opacity: 0.14;
+    filter: blur(2px);
+  }
+  .hero-visual :global(.hero-stack) {
+    position: relative;
+    max-width: 440px;
+    margin-inline: auto;
+    filter: drop-shadow(0 24px 30px rgb(30 27 75 / 0.18));
+  }
+  .float {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    font-weight: 750;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .float :global(svg) {
+    color: var(--violet);
+  }
+  .f1 {
+    top: 10%;
+    left: 4%;
+  }
+  .f2 {
+    top: 34%;
+    right: 0;
+  }
+  .f3 {
+    bottom: 8%;
+    left: 12%;
+  }
+
+  .split-section {
+    padding-bottom: clamp(40px, 5vw, 64px);
+  }
+  .split {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 36px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .split:hover {
+    border-color: #cfc3f5;
+    box-shadow: var(--shadow);
+  }
+  .split h2 {
+    font-size: 1.6rem;
+  }
+  .split .link,
+  .depot a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 750;
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .head-row .section-head {
+    margin-bottom: 0;
+  }
+
+  .service {
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .service:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+  .service p {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 20px;
+    counter-reset: step;
+  }
+  .steps li {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .num {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--grad);
+    color: #fff;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .steps p {
+    color: var(--muted);
+    margin: 0;
+  }
+  .center-row {
+    text-align: center;
+  }
+
+  .circular {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .cycle ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .cycle li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    position: relative;
+  }
+  .cycle li:nth-child(odd) {
+    background: var(--bg-soft);
+  }
+  .cycle li :global(svg) {
+    flex: none;
+    color: var(--violet);
+  }
+  .cycle strong {
+    color: var(--ink);
+  }
+
+  .depot p {
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .circular {
+      grid-template-columns: 1fr;
+    }
+    .hero-visual {
+      max-width: 360px;
+      margin-inline: auto;
+      width: 100%;
+    }
+  }
+</style>

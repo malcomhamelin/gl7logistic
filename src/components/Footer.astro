@@ -1,0 +1,154 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { company } from '../config';
+import { palettes } from '../data/palettes';
+import { zones } from '../data/zones';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand">
+      <Logo inverted />
+      <p>
+        Achat, vente, réparation et rachat de palettes en bois pour les professionnels d'Île-de-France. Dépôts à
+        Champlan (91) et Orly (94).
+      </p>
+      <a class="btn btn-primary btn-sm" href="/devis">Demander un devis</a>
+    </div>
+
+    <div>
+      <h2>Nos palettes</h2>
+      <ul>
+        {palettes.map((p) => <li><a href={`/palettes/${p.slug}`}>{p.name}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2>Services</h2>
+      <ul>
+        <li><a href="/services#vente">Vente de palettes</a></li>
+        <li><a href="/rachat-palettes">Rachat et enlèvement</a></li>
+        <li><a href="/services#reparation">Réparation, reconditionnement</a></li>
+        <li><a href="/services#livraison">Livraison</a></li>
+      </ul>
+      <h2 class="mt">Zones</h2>
+      <ul>
+        {zones.map((z) => <li><a href={`/zones/${z.slug}`}>Palettes {z.name}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2>Contact</h2>
+      <ul class="contact">
+        <li><Icon name="phone" size={18} /><a href={company.phoneHref}>{company.phone}</a></li>
+        <li><Icon name="mail" size={18} /><a href={`mailto:${company.email}`}>{company.email}</a></li>
+        {
+          company.depots.map((d) => (
+            <li>
+              <Icon name="pin" size={18} />
+              <span>
+                <strong>{d.name}</strong>
+                <br />
+                {d.street && (<>{d.street}<br /></>)}
+                {d.postalCode} {d.city}
+              </span>
+            </li>
+          ))
+        }
+        <li>
+          <Icon name="clock" size={18} />
+          <span>{company.hours.map((h) => (<>{h.days} : {h.time}<br /></>))}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container legal">
+    <span>© {year} {company.legalName} {company.legalForm} · SIREN {company.siren}</span>
+    <span><a href="/mentions-legales">Mentions légales</a> · <a href="/mentions-legales#donnees">Données personnelles</a></span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--bg-dark);
+    color: #b8bfd6;
+    padding-top: 64px;
+    font-size: 0.95rem;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 40px;
+    padding-bottom: 48px;
+  }
+  .brand p {
+    margin: 20px 0 24px;
+    max-width: 320px;
+  }
+  h2 {
+    color: #fff;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h2.mt {
+    margin-top: 28px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  a {
+    color: #d7dcec;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .contact li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .contact svg {
+    flex: none;
+    margin-top: 3px;
+    color: #a78bfa;
+  }
+  .contact strong {
+    color: #fff;
+    font-weight: 700;
+  }
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 24px;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    font-size: 0.85rem;
+    color: #8790ad;
+  }
+  .legal a {
+    color: #8790ad;
+  }
+  @media (max-width: 960px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

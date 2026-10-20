@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { company } from '../config';
+---
+
+<Base title="Merci, votre demande est envoyée" description="Votre demande a bien été transmise à GL7 Logistic." noindex>
+  <section class="section">
+    <div class="container thanks">
+      <span class="icon-badge big"><Icon name="message" size={32} /></span>
+      <h1>Merci, votre demande est bien partie !</h1>
+      <p class="lead">
+        Nous l'étudions et revenons vers vous sous {company.responseTime}. Pour toute urgence, appelez-nous au
+        <a href={company.phoneHref}>{company.phone}</a>.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/">Retour à l'accueil</a>
+        <a class="btn btn-ghost" href="/palettes">Voir nos palettes</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks {
+    max-width: 720px;
+    text-align: center;
+    padding-block: 40px;
+  }
+  .big {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+  }
+  .btn-row {
+    justify-content: center;
+    margin-top: 28px;
+  }
+</style>

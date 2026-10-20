@@ -1,0 +1,203 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { company } from '../config';
+
+const nav = [
+  { href: '/palettes', label: 'Nos palettes' },
+  { href: '/services', label: 'Services' },
+  { href: '/rachat-palettes', label: 'Rachat de palettes' },
+  { href: '/zones/ile-de-france', label: "Zone d'intervention" },
+  { href: '/a-propos', label: 'À propos' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+const isActive = (href: string) => path === href || path.startsWith(href + '/') || (href.startsWith('/zones') && path.startsWith('/zones'));
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <Logo />
+
+    <nav class="nav" aria-label="Navigation principale">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="phone" href={company.phoneHref} aria-label={`Appeler le ${company.phone}`}>
+        <Icon name="phone" size={18} />
+        <span>{company.phone}</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="/devis">Demander un devis</a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+        <Icon name="menu" class="i-open" />
+        <Icon name="close" class="i-close" />
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile" id="mobile-menu" hidden>
+    <div class="container">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mobile-cta">
+        <a class="btn btn-primary" href="/devis">Demander un devis</a>
+        <a class="btn btn-ghost" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.burger');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    btn.setAttribute('aria-label', open ? 'Ouvrir le menu' : 'Fermer le menu');
+    if (menu) menu.hidden = open;
+    document.body.classList.toggle('menu-open', !open);
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(255 255 255 / 0.92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 76px;
+  }
+  .nav ul {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav a,
+  .mobile a:not(.btn) {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--ink-2);
+    text-decoration: none;
+    font-weight: 650;
+    font-size: 0.95rem;
+  }
+  .nav a:hover {
+    color: var(--ink);
+    background: var(--bg-soft);
+  }
+  .nav a[aria-current='page'] {
+    color: var(--violet);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 750;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .phone svg {
+    color: var(--violet);
+  }
+  .burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    place-items: center;
+  }
+  .burger :global(.i-close),
+  .burger[aria-expanded='true'] :global(.i-open) {
+    display: none;
+  }
+  .burger[aria-expanded='true'] :global(.i-close) {
+    display: block;
+  }
+
+  .mobile {
+    border-top: 1px solid var(--line);
+    background: #fff;
+    padding-block: 12px 24px;
+  }
+  .mobile ul {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+  .mobile a:not(.btn) {
+    padding: 14px 4px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+  }
+  .mobile-cta {
+    display: grid;
+    gap: 10px;
+  }
+
+  @media (max-width: 1180px) {
+    .phone span {
+      display: none;
+    }
+  }
+  @media (max-width: 1020px) {
+    .nav,
+    .phone {
+      display: none;
+    }
+    .burger {
+      display: grid;
+    }
+  }
+  @media (max-width: 480px) {
+    .actions .btn {
+      display: none;
+    }
+  }
+  @media (min-width: 1021px) {
+    .mobile {
+      display: none;
+    }
+  }
+</style>

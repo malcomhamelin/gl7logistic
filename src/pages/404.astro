@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import PalletArt from '../components/PalletArt.astro';
+---
+
+<Base title="Page introuvable" description="Cette page n'existe pas ou a été déplacée." noindex>
+  <section class="section">
+    <div class="container nf">
+      <div class="art"><PalletArt build="light" /></div>
+      <h1>Cette page s'est égarée</h1>
+      <p class="lead">Comme une palette sans étiquette. Revenez à l'accueil ou consultez nos palettes.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/">Accueil</a>
+        <a class="btn btn-ghost" href="/palettes">Nos palettes</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    max-width: 640px;
+    text-align: center;
+  }
+  .art {
+    max-width: 220px;
+    margin: 0 auto 24px;
+  }
+  .btn-row {
+    justify-content: center;
+  }
+</style>

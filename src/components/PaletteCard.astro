@@ -1,0 +1,83 @@
+---
+import PalletArt from './PalletArt.astro';
+import Icon from './Icon.astro';
+import type { Palette } from '../data/palettes';
+
+interface Props {
+  palette: Palette;
+}
+const { palette } = Astro.props;
+const { length, width } = palette.dimensions;
+---
+
+<article class="pcard">
+  <a class="visual" href={`/palettes/${palette.slug}`} tabindex="-1" aria-hidden="true">
+    <PalletArt length={length} width={width} build={palette.build} />
+  </a>
+  <div class="body">
+    <h3><a href={`/palettes/${palette.slug}`}>{palette.name}</a></h3>
+    <p>{palette.short}</p>
+    <div class="chips">
+      {palette.grades.map((g) => <span class="chip">{g}</span>)}
+    </div>
+  </div>
+  <div class="foot">
+    <a class="more" href={`/palettes/${palette.slug}`}>Voir la fiche <Icon name="arrow" size={16} /></a>
+    <a class="btn btn-ghost btn-sm" href={`/devis?produit=${palette.slug}`}>Devis</a>
+  </div>
+</article>
+
+<style>
+  .pcard {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .pcard:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+  .visual {
+    display: block;
+    padding: 28px 36px;
+    background: linear-gradient(180deg, #f7f8fc, #eef0f8);
+    border-bottom: 1px solid var(--line);
+  }
+  .visual :global(svg) {
+    max-height: 150px;
+    margin-inline: auto;
+  }
+  .body {
+    padding: 22px 22px 0;
+    flex: 1;
+  }
+  h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  h3 a:hover {
+    color: var(--violet);
+  }
+  .body p {
+    color: var(--muted);
+    font-size: 0.97rem;
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px 22px;
+  }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+</style>

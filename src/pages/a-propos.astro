@@ -1,0 +1,149 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import PalletArt from '../components/PalletArt.astro';
+import { company } from '../config';
+
+const facts = [
+  { value: String(company.founded), label: 'Année de création' },
+  { value: '2', label: 'Dépôts : Champlan et Orly' },
+  { value: '10+', label: 'Collaborateurs' },
+  { value: 'IDF', label: 'Zone de livraison' },
+];
+
+const values = [
+  { icon: 'clock', title: 'Réactivité', text: 'Un devis rapide et des délais tenus, parce qu\'une palette manquante peut bloquer toute une expédition.' },
+  { icon: 'shield', title: 'Fiabilité', text: 'Des palettes triées avec soin : vous recevez la qualité commandée.' },
+  { icon: 'leaf', title: 'Réemploi', text: 'Réparer et remettre en circulation plutôt que jeter : bon pour vos coûts et pour la planète.' },
+] as const;
+---
+
+<Base
+  title="À propos de GL7 Logistic, négoce de palettes en Île-de-France"
+  description="GL7 Logistic, entreprise francilienne d'achat, vente, réparation et rachat de palettes en bois. Dépôts à Champlan (91) et Orly (94)."
+>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / À propos</nav>
+      <h1>GL7 Logistic, votre partenaire palettes au sud de Paris</h1>
+      <p class="lead">
+        Une entreprise francilienne spécialisée dans le négoce, la réparation et le rachat de palettes en bois pour les
+        professionnels.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container story">
+      <div class="prose">
+        <!-- TODO: texte provisoire, à remplacer par la vraie histoire de l'entreprise -->
+        <h2>Notre histoire</h2>
+        <p>
+          GL7 Logistic est née en {company.founded} d'un constat simple : les entreprises ont besoin de palettes fiables,
+          disponibles rapidement et à un prix juste, et beaucoup d'autres en ont trop sur les bras sans savoir quoi en faire.
+        </p>
+        <p>
+          Nous faisons le lien entre les deux. Nous rachetons les palettes dont nos partenaires n'ont plus besoin, nous les
+          trions et les réparons dans nos dépôts, puis nous les revendons à ceux qui en ont l'usage, avec également une
+          offre de palettes neuves.
+        </p>
+        <p>
+          Installés à Champlan, dans l'Essonne, puis à Orly, dans le Val-de-Marne, nous sommes au cœur de l'un des plus grands
+          bassins logistiques de France : à proximité de l'A6, de l'A10, de la N7 et du marché de Rungis.
+        </p>
+      </div>
+      <div class="art"><PalletArt stack={3} length={1200} width={1000} /></div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <dl class="facts">
+        {
+          facts.map((f) => (
+            <div>
+              <dt>{f.label}</dt>
+              <dd class="grad-text">{f.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Nos engagements</span>
+        <h2>Ce qui guide notre travail</h2>
+      </div>
+      <div class="grid grid-3">
+        {
+          values.map((v) => (
+            <div class="card">
+              <span class="icon-badge">
+                <Icon name={v.icon} />
+              </span>
+              <h3>{v.title}</h3>
+              <p>{v.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .story {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .story .prose h2 {
+    margin-top: 0;
+  }
+  .art {
+    max-width: 360px;
+    width: 100%;
+    justify-self: center;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 20px;
+    margin: 0;
+  }
+  .facts div {
+    display: flex;
+    flex-direction: column-reverse;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .facts dd {
+    margin: 0 0 4px;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .facts dt {
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .card p {
+    color: var(--muted);
+    margin: 0;
+  }
+  @media (max-width: 860px) {
+    .story {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

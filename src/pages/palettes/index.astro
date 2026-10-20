@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaletteCard from '../../components/PaletteCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { palettes, gradeInfo, type Grade } from '../../data/palettes';
+---
+
+<Base
+  title="Nos palettes bois : Europe, demi-palette, 100×120, NIMP 15"
+  description="Catalogue GL7 Logistic : palettes Europe 80×120 EPAL, demi-palettes 60×80, palettes 100×120, palettes légères, formats hors standard et palettes NIMP 15. Neuves, 1er choix, 2e choix ou reconditionnées."
+>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Nos palettes</nav>
+      <h1>Nos palettes en bois</h1>
+      <p class="lead">
+        Les principaux formats du marché, en neuf ou en occasion. Les prix dépendent du format, de l'état et des quantités :
+        demandez un devis, nous vous répondons rapidement.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {palettes.map((p) => <PaletteCard palette={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Neuf ou occasion</span>
+        <h2>Quel niveau de qualité choisir ?</h2>
+        <p>Les palettes d'occasion sont triées à leur arrivée au dépôt. Voici ce que recouvre chaque catégorie.</p>
+      </div>
+      <div class="grid grid-4">
+        {
+          (Object.keys(gradeInfo) as Grade[]).map((g) => (
+            <div class="card grade">
+              <span class="chip">{g}</span>
+              <p>{gradeInfo[g]}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="note">
+        Vous ne savez pas quelle palette choisir ? Décrivez-nous vos produits et votre usage (stockage, transport, export) :
+        nous vous conseillons.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .grade p {
+    margin: 14px 0 0;
+    color: var(--muted);
+  }
+  .note {
+    margin-top: 32px;
+    color: var(--muted);
+  }
+</style>

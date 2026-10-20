@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import { company } from '../config';
+---
+
+<Base
+  title="Demande de devis palettes et contact"
+  description="Demandez un devis pour vos palettes bois neuves ou d'occasion : Europe 80×120, 60×80, 100×120, NIMP 15. Réponse rapide. GL7 Logistic, Champlan (91) et Orly (94)."
+>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Devis et contact</nav>
+      <h1>Demander un devis</h1>
+      <p class="lead">
+        Quelques informations suffisent pour vous faire une proposition adaptée. Nous vous répondons sous {company.responseTime}.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="card form-card">
+        <QuoteForm />
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <h2>Nous contacter</h2>
+          <ul class="contact">
+            <li>
+              <Icon name="phone" />
+              <span><a href={company.phoneHref}>{company.phone}</a></span>
+            </li>
+            <li>
+              <Icon name="mail" />
+              <span><a href={`mailto:${company.email}`}>{company.email}</a></span>
+            </li>
+            <li>
+              <Icon name="clock" />
+              <span>{company.hours.map((h) => (<>{h.days} : {h.time}<br /></>))}</span>
+            </li>
+          </ul>
+        </div>
+        {
+          company.depots.map((d) => (
+            <div class="card">
+              <h3>{d.name}</h3>
+              <p>
+                {d.street && (<>{d.street}<br /></>)}
+                {d.postalCode} {d.city}
+              </p>
+              <a class="maps" href={d.mapsUrl} target="_blank" rel="noopener">
+                Ouvrir dans Google Maps <Icon name="arrow" size={16} />
+              </a>
+            </div>
+          ))
+        }
+        <div class="card sell">
+          <h3>Vous voulez vendre des palettes ?</h3>
+          <a href="/rachat-palettes">Utilisez le formulaire de rachat <Icon name="arrow" size={16} /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 32px;
+    align-items: start;
+  }
+  .form-card {
+    padding: clamp(24px, 4vw, 40px);
+  }
+  .side {
+    display: grid;
+    gap: 20px;
+  }
+  .side .card {
+    padding: 24px;
+  }
+  .side h2 {
+    font-size: 1.2rem;
+  }
+  .contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .contact li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .contact :global(svg) {
+    color: var(--violet);
+    flex: none;
+  }
+  .contact a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    word-break: break-word;
+  }
+  .side p {
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .maps,
+  .sell a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sell {
+    background: var(--grad-soft);
+  }
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+// Logo GL7 Logistic : le nom posé sur une palette, « GL7 » en dégradé bleu → violet.
+interface Props {
+  inverted?: boolean;
+}
+const { inverted = false } = Astro.props;
+const gid = `gl7g-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<a href="/" class:list={['logo', { inverted }]} aria-label="GL7 Logistic, accueil">
+  <span class="word">
+    <span class="gl7">GL7</span>
+    <span class="logistic">Logistic</span>
+  </span>
+  <svg class="base" viewBox="0 0 120 16" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id={gid} x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#2563eb" />
+        <stop offset="1" stop-color="#7c3aed" />
+      </linearGradient>
+    </defs>
+    <g fill={`url(#${gid})`}>
+      <rect x="0" y="0" width="120" height="4.5" rx="1.2" />
+      <rect x="4" y="4.5" width="14" height="7" />
+      <rect x="53" y="4.5" width="14" height="7" />
+      <rect x="102" y="4.5" width="14" height="7" />
+      <rect x="0" y="11.5" width="120" height="4.5" rx="1.2" />
+    </g>
+  </svg>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    text-decoration: none;
+    line-height: 1;
+  }
+  .word {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4em;
+  }
+  .gl7 {
+    font-weight: 800;
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .logistic {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .inverted .logistic {
+    color: #fff;
+  }
+  .inverted .gl7 {
+    background: linear-gradient(120deg, #93b4ff, #c4a5ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .base {
+    width: 100%;
+    height: 13px;
+  }
+</style>

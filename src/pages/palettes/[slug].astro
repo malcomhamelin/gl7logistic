@@ -1,0 +1,210 @@
+---
+import Base from '../../layouts/Base.astro';
+import PalletArt from '../../components/PalletArt.astro';
+import PaletteCard from '../../components/PaletteCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { company } from '../../config';
+import { palettes, gradeInfo, type Palette } from '../../data/palettes';
+
+export function getStaticPaths() {
+  return palettes.map((palette) => ({ params: { slug: palette.slug }, props: { palette } }));
+}
+
+interface Props {
+  palette: Palette;
+}
+const { palette } = Astro.props;
+const others = palettes.filter((p) => p.slug !== palette.slug && p.featured).slice(0, 3);
+
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: palette.name,
+  description: palette.short,
+  category: 'Palettes en bois',
+  brand: { '@type': 'Brand', name: company.name },
+};
+---
+
+<Base title={`${palette.name} – neuve et d'occasion`} description={`${palette.short} ${palette.grades.join(', ')}. Devis rapide, livraison en Île-de-France depuis Champlan (91) et Orly (94).`} jsonLd={productLd}>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/">Accueil</a> / <a href="/palettes">Nos palettes</a> / {palette.name}
+      </nav>
+    </div>
+    <div class="container product">
+      <div class="visual">
+        <PalletArt
+          length={palette.dimensions.length}
+          width={palette.dimensions.width}
+          build={palette.build}
+          stack={2}
+          label={`Illustration ${palette.name}`}
+        />
+      </div>
+      <div>
+        <h1>{palette.name}</h1>
+        <p class="lead">{palette.short}</p>
+        <div class="chips">
+          {palette.grades.map((g) => <span class="chip">{g}</span>)}
+        </div>
+        <div class="btn-row cta">
+          <a class="btn btn-primary" href={`/devis?produit=${palette.slug}`}>Demander un devis <Icon name="arrow" size={18} /></a>
+          <a class="btn btn-ghost" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+        </div>
+        <p class="small">Prix selon quantité et état. Réponse sous {company.responseTime}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container detail">
+      <div class="prose">
+        <h2>Présentation</h2>
+        {palette.description.map((p) => <p>{p}</p>)}
+
+        <h2>Utilisations courantes</h2>
+        <ul class="check-list">
+          {palette.uses.map((u) => <li>{u}</li>)}
+        </ul>
+
+        <h2>États disponibles</h2>
+        <dl class="grades">
+          {
+            palette.grades.map((g) => (
+              <div>
+                <dt>{g}</dt>
+                <dd>{gradeInfo[g]}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <aside class="card specs">
+        <h2>Caractéristiques</h2>
+        <dl>
+          {
+            palette.specs.map((s) => (
+              <div>
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="small">Caractéristiques indicatives, variables selon le modèle et l'état.</p>
+        <a class="btn btn-primary" href={`/devis?produit=${palette.slug}`}>Devis pour ce produit</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>Autres palettes</h2>
+      </div>
+      <div class="grid grid-3">
+        {others.map((p) => <PaletteCard palette={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .visual {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 40px;
+  }
+  .visual :global(svg) {
+    max-height: 300px;
+    margin-inline: auto;
+  }
+  .cta {
+    margin-top: 28px;
+  }
+  .small {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+  .detail {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 48px;
+    align-items: start;
+  }
+  .detail .prose h2:first-child {
+    margin-top: 0;
+  }
+  .grades {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+  }
+  .grades div {
+    padding: 14px 18px;
+    border-left: 3px solid var(--violet);
+    background: var(--bg-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .grades dt {
+    font-weight: 750;
+    color: var(--ink);
+  }
+  .grades dd {
+    margin: 0;
+    color: var(--muted);
+  }
+  .specs {
+    position: sticky;
+    top: 100px;
+  }
+  .specs h2 {
+    font-size: 1.2rem;
+  }
+  .specs dl {
+    margin: 0 0 8px;
+  }
+  .specs dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .specs dt {
+    color: var(--muted);
+  }
+  .specs dd {
+    margin: 0;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: right;
+  }
+  .specs .btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+  @media (max-width: 900px) {
+    .product,
+    .detail {
+      grid-template-columns: 1fr;
+    }
+    .specs {
+      position: static;
+    }
+  }
+</style>

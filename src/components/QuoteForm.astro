@@ -1,0 +1,141 @@
+---
+import { company, forms } from '../config';
+import { palettes } from '../data/palettes';
+---
+
+<form
+  class="form"
+  data-gl7-form
+  data-kind="devis"
+  data-endpoint={forms.quote}
+  data-email={company.email}
+  data-subject="Demande de devis palettes"
+  action={forms.quote || undefined}
+  method="post"
+>
+  <input type="hidden" name="_subject" value="Nouvelle demande de devis – site GL7 Logistic" />
+  <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <div class="form-row">
+    <div class="field">
+      <label for="q-produit">Type de palette <span class="req">*</span></label>
+      <select id="q-produit" name="produit" required>
+        <option value="">Choisir…</option>
+        {palettes.map((p) => <option value={p.name} data-slug={p.slug}>{p.name}</option>)}
+        <option value="Autre / je ne sais pas">Autre / je ne sais pas</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="q-quantite">Quantité <span class="req">*</span></label>
+      <input id="q-quantite" name="quantite" type="text" inputmode="numeric" placeholder="ex. 200" required />
+    </div>
+  </div>
+
+  <fieldset class="field">
+    <legend>État souhaité</legend>
+    <div class="options">
+      {
+        ['Neuve', '1er choix', '2e choix', 'Reconditionnée', 'Peu importe'].map((g) => (
+          <label class="option">
+            <input type="checkbox" name="etat" value={g} />
+            <span>{g}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <div class="form-row">
+    <fieldset class="field">
+      <legend>Fréquence</legend>
+      <div class="options">
+        {
+          ['Ponctuelle', 'Hebdomadaire', 'Mensuelle'].map((f, i) => (
+            <label class="option">
+              <input type="radio" name="frequence" value={f} checked={i === 0} />
+              <span>{f}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <fieldset class="field">
+      <legend>Réception</legend>
+      <div class="options">
+        {
+          ['Livraison', 'Retrait au dépôt'].map((m, i) => (
+            <label class="option">
+              <input type="radio" name="reception" value={m} checked={i === 0} />
+              <span>{m}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="q-cp">Code postal de livraison</label>
+      <input id="q-cp" name="code_postal" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="ex. 91160" />
+    </div>
+    <div class="field">
+      <label for="q-date">Date souhaitée</label>
+      <input id="q-date" name="date_souhaitee" type="date" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="q-nom">Nom <span class="req">*</span></label>
+      <input id="q-nom" name="nom" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="q-entreprise">Entreprise</label>
+      <input id="q-entreprise" name="entreprise" type="text" autocomplete="organization" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="q-email">E-mail <span class="req">*</span></label>
+      <input id="q-email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="q-tel">Téléphone <span class="req">*</span></label>
+      <input id="q-tel" name="telephone" type="tel" autocomplete="tel" required />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="q-message">Précisions</label>
+    <textarea id="q-message" name="message" placeholder="Dimensions particulières, marquage EPAL, NIMP 15, contraintes d'accès…"></textarea>
+  </div>
+
+  <label class="consent">
+    <input type="checkbox" name="consentement" value="oui" required />
+    <span>
+      J'accepte que mes informations soient utilisées pour traiter ma demande. Elles ne sont jamais revendues. <a
+        href="/mentions-legales#donnees">En savoir plus</a>
+    </span>
+  </label>
+
+  <p class="form-status" role="status" aria-live="polite"></p>
+
+  <div>
+    <button class="btn btn-primary" type="submit">Envoyer ma demande de devis</button>
+  </div>
+</form>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+
+  // Pré-sélection du produit depuis ?produit=<slug>
+  const slug = new URLSearchParams(window.location.search).get('produit');
+  const select = document.querySelector<HTMLSelectElement>('#q-produit');
+  if (slug && select) {
+    const option = select.querySelector<HTMLOptionElement>(`option[data-slug="${CSS.escape(slug)}"]`);
+    if (option) select.value = option.value;
+  }
+</script>

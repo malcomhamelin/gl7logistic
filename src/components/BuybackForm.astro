@@ -1,0 +1,115 @@
+---
+import { company, forms } from '../config';
+---
+
+<form
+  class="form"
+  data-gl7-form
+  data-kind="rachat"
+  data-endpoint={forms.buyback}
+  data-email={company.email}
+  data-subject="Proposition de palettes à racheter"
+  action={forms.buyback || undefined}
+  method="post"
+>
+  <input type="hidden" name="_subject" value="Palettes à racheter / enlever – site GL7 Logistic" />
+  <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <fieldset class="field">
+    <legend>Types de palettes</legend>
+    <div class="options">
+      {
+        ['Europe 80×120 EPAL', 'Europe non marquée', 'Demi-palette 60×80', '100×120', 'Palettes légères', 'Formats divers'].map((t) => (
+          <label class="option">
+            <input type="checkbox" name="types" value={t} />
+            <span>{t}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="b-quantite">Quantité approximative <span class="req">*</span></label>
+      <input id="b-quantite" name="quantite" type="text" placeholder="ex. 50, ou 1 camion" required />
+    </div>
+    <div class="field">
+      <label for="b-etat">État général</label>
+      <select id="b-etat" name="etat">
+        <option>Bon état</option>
+        <option>Mélangé</option>
+        <option>Abîmé / à réparer</option>
+        <option>Je ne sais pas</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <fieldset class="field">
+      <legend>Fréquence</legend>
+      <div class="options">
+        {
+          ['Ponctuelle', 'Régulière'].map((f, i) => (
+            <label class="option">
+              <input type="radio" name="frequence" value={f} checked={i === 0} />
+              <span>{f}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="b-cp">Code postal d'enlèvement <span class="req">*</span></label>
+      <input id="b-cp" name="code_postal" type="text" inputmode="numeric" autocomplete="postal-code" required />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="b-nom">Nom <span class="req">*</span></label>
+      <input id="b-nom" name="nom" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="b-entreprise">Entreprise</label>
+      <input id="b-entreprise" name="entreprise" type="text" autocomplete="organization" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="b-email">E-mail <span class="req">*</span></label>
+      <input id="b-email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="b-tel">Téléphone <span class="req">*</span></label>
+      <input id="b-tel" name="telephone" type="tel" autocomplete="tel" required />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="b-message">Précisions</label>
+    <textarea id="b-message" name="message" placeholder="Accès au site, palettes gerbées ou en vrac, horaires d'enlèvement…"></textarea>
+    <span class="hint">Des photos nous aident à estimer le prix : vous pourrez nous les envoyer en réponse à notre e-mail.</span>
+  </div>
+
+  <label class="consent">
+    <input type="checkbox" name="consentement" value="oui" required />
+    <span>
+      J'accepte que mes informations soient utilisées pour traiter ma demande. <a href="/mentions-legales#donnees"
+        >En savoir plus</a
+      >
+    </span>
+  </label>
+
+  <p class="form-status" role="status" aria-live="polite"></p>
+
+  <div>
+    <button class="btn btn-primary" type="submit">Envoyer ma proposition</button>
+  </div>
+</form>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+</script>

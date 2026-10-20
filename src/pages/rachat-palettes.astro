@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import BuybackForm from '../components/BuybackForm.astro';
+import Icon from '../components/Icon.astro';
+import { company } from '../config';
+
+const faq = [
+  {
+    q: 'Quelles palettes rachetez-vous ?',
+    a: "Principalement les palettes Europe 80×120 (EPAL ou non), les demi-palettes 60×80 et les palettes 100×120. Pour les autres formats, décrivez-les dans le formulaire : nous vous dirons ce que nous pouvons reprendre.",
+  },
+  {
+    q: 'Combien vaut une palette ?',
+    a: "Le prix dépend du format, du marquage (EPAL ou non), de l'état et de la quantité. Une palette EPAL en bon état se rachète mieux qu'une palette non marquée ou abîmée. Nous vous faisons une proposition après description ou photos.",
+  },
+  {
+    q: 'Reprenez-vous les palettes abîmées ?',
+    a: "Oui. Les palettes réparables passent par notre atelier. Selon la quantité et l'état, elles peuvent être rachetées ou simplement enlevées.",
+  },
+  {
+    q: 'Faut-il une quantité minimum ?',
+    a: "L'enlèvement sur site est organisé à partir d'un certain volume, qui dépend de votre localisation. En dessous, vous pouvez déposer vos palettes à Champlan ou à Orly. Contactez-nous pour en parler.",
+  },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<Base
+  title="Rachat et enlèvement de palettes usagées en Île-de-France"
+  description="Vous avez des palettes en trop ? GL7 Logistic rachète et enlève vos palettes Europe, EPAL, 60×80, 100×120 en Essonne, Val-de-Marne et Île-de-France. Proposition rapide."
+  jsonLd={faqLd}
+>
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Rachat de palettes</nav>
+      <h1>Vous avez des palettes en trop ? <span class="grad-text">On les rachète.</span></h1>
+      <p class="lead">
+        Entrepôts, commerces, industriels, chantiers : nous rachetons et enlevons vos palettes vides en Essonne, dans le
+        Val-de-Marne et en Île-de-France.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="card form-card">
+        <h2>Décrivez vos palettes</h2>
+        <p class="muted">Nous revenons vers vous avec une proposition sous {company.responseTime}.</p>
+        <BuybackForm />
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <h3>Pourquoi nous les confier ?</h3>
+          <ul class="perks">
+            <li><Icon name="cash" /><span><strong>Rachetées</strong> selon le format et l'état</span></li>
+            <li><Icon name="truck" /><span><strong>Enlevées</strong> sur votre site</span></li>
+            <li><Icon name="warehouse" /><span><strong>De la place libérée</strong> sur vos quais</span></li>
+            <li><Icon name="leaf" /><span><strong>Réemployées</strong> plutôt que jetées</span></li>
+          </ul>
+        </div>
+        <div class="card call">
+          <h3>Plus rapide par téléphone ?</h3>
+          <a class="btn btn-ghost" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container faq">
+      <div class="section-head">
+        <span class="eyebrow">Questions fréquentes</span>
+        <h2>Le rachat de palettes en pratique</h2>
+      </div>
+      <div class="faq-list">
+        {
+          faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 32px;
+    align-items: start;
+  }
+  .form-card {
+    padding: clamp(24px, 4vw, 40px);
+  }
+  .muted {
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .side {
+    display: grid;
+    gap: 20px;
+    position: sticky;
+    top: 100px;
+  }
+  .perks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+  .perks li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .perks :global(svg) {
+    color: var(--violet);
+    flex: none;
+  }
+  .perks strong {
+    color: var(--ink);
+  }
+  .call .btn {
+    width: 100%;
+  }
+  .faq-list {
+    display: grid;
+    gap: 12px;
+    max-width: 820px;
+  }
+  details {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 18px 22px;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 750;
+    color: var(--ink);
+  }
+  details p {
+    margin: 12px 0 0;
+  }
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      position: static;
+    }
+  }
+</style>
