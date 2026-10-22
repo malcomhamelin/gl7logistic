@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import Base from '../../layouts/Base.astro';
 import PalletArt from '../../components/PalletArt.astro';
 import PaletteCard from '../../components/PaletteCard.astro';
@@ -17,22 +18,12 @@ interface Props {
 const { palette } = Astro.props;
 const others = palettes.filter((p) => p.slug !== palette.slug && p.featured).slice(0, 3);
 
-const productLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  name: palette.name,
-  description: palette.short,
-  category: 'Palettes en bois',
-  brand: { '@type': 'Brand', name: company.name },
-};
 ---
 
-<Base title={`${palette.name} – neuve et d'occasion`} description={`${palette.short} ${palette.grades.join(', ')}. Devis rapide, livraison en Île-de-France depuis Champlan (91) et Orly (94).`} jsonLd={productLd}>
+<Base title={`${palette.name} d'occasion`} description={`${palette.name} d'occasion : ${palette.grades.join(', ')}. ${palette.short} Livraison en Île-de-France depuis Champlan (91) et Orly (94).`}>
   <section class="page-hero">
     <div class="container">
-      <nav class="breadcrumb" aria-label="Fil d'Ariane">
-        <a href="/">Accueil</a> / <a href="/palettes">Nos palettes</a> / {palette.name}
-      </nav>
+      <Breadcrumb items={[{ label: 'Nos palettes', href: '/palettes' }, { label: palette.name }]} />
     </div>
     <div class="container product">
       <div class="visual">
@@ -51,10 +42,10 @@ const productLd = {
           {palette.grades.map((g) => <span class="chip">{g}</span>)}
         </div>
         <div class="btn-row cta">
-          <a class="btn btn-primary" href={`/devis?produit=${palette.slug}`}>Demander un devis <Icon name="arrow" size={18} /></a>
-          <a class="btn btn-ghost" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+          <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+          <a class="btn btn-ghost" href={`/contact?produit=${encodeURIComponent(palette.name)}`}>Être rappelé</a>
         </div>
-        <p class="small">Prix selon quantité et état. Réponse sous {company.responseTime}.</p>
+        <p class="small">Prix selon quantité et état. Rappel sous {company.responseTime}.</p>
       </div>
     </div>
   </section>
@@ -96,7 +87,8 @@ const productLd = {
           }
         </dl>
         <p class="small">Caractéristiques indicatives, variables selon le modèle et l'état.</p>
-        <a class="btn btn-primary" href={`/devis?produit=${palette.slug}`}>Devis pour ce produit</a>
+        <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> Appeler</a>
+        <a class="btn btn-ghost" href={`/contact?produit=${encodeURIComponent(palette.name)}`}>Être rappelé</a>
       </aside>
     </div>
   </section>

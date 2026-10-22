@@ -123,6 +123,10 @@ a {
   color: var(--ink-2);
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .grad-text {
   background: var(--grad);
   -webkit-background-clip: text;
@@ -302,6 +306,7 @@ a {
 .field {
   display: grid;
   gap: 6px;
+  align-content: start;
 }
 .field label,
 .field legend {

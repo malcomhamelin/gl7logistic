@@ -1,7 +1,7 @@
 # GL7 Logistic – site vitrine
 
-Site de présentation de GL7 Logistic (achat, vente, réparation et rachat de palettes bois, Champlan 91 / Orly 94).
-Pas de vente en ligne : le site présente les produits et génère des demandes de devis et des propositions de rachat.
+Site de présentation de GL7 Logistic (achat, vente, réparation et rachat de palettes bois d'occasion, Champlan 91 / Orly 94).
+Pas de vente en ligne : le site présente les produits et pousse avant tout à **appeler**, ou à laisser son numéro pour être rappelé.
 
 Site statique construit avec [Astro](https://astro.build), sans base de données ni back-office.
 
@@ -21,7 +21,8 @@ Node 22.22 ou plus récent requis.
 | Quoi | Fichier |
 |---|---|
 | Téléphone, e-mail, horaires, adresses, mentions légales | `src/config.ts` |
-| Adresse d'envoi des formulaires | `src/config.ts` (`forms`) |
+| Adresse d'envoi du formulaire de rappel | `src/config.ts` (`forms`) |
+| Articles de la rubrique Conseils | `src/content/conseils/*.md` |
 | Catalogue de palettes (textes, caractéristiques, états) | `src/data/palettes.ts` |
 | Pages locales (Essonne, Val-de-Marne, IDF) | `src/data/zones.ts` |
 | Couleurs, typographie, boutons | `src/styles/global.css` |
@@ -29,15 +30,35 @@ Node 22.22 ou plus récent requis.
 
 Ajouter une palette ou une zone dans les fichiers de `src/data/` crée automatiquement sa page.
 
-## Formulaires
+## Formulaire « Être rappelé »
 
-Les formulaires de devis (`/devis`) et de rachat (`/rachat-palettes`) envoient leurs données à un service externe.
-Recommandé : [Formspree](https://formspree.io) (gratuit jusqu'à 50 envois/mois).
+Un seul formulaire court, présent sur `/contact` et `/rachat-palettes` : type de demande (acheter / vendre), nom,
+téléphone de rappel, e-mail facultatif et demande en texte libre (quantités approximatives, commune…).
+L'objet de l'e-mail reçu indique le type de demande et le nom, ex. « Rappel demandé – Vendre des palettes – Dupont ».
 
-1. Créer deux formulaires sur Formspree, avec l'adresse e-mail de réception.
-2. Copier les URL fournies (`https://formspree.io/f/xxxx`) dans `forms.quote` et `forms.buyback` de `src/config.ts`.
+Envoi via [Formspree](https://formspree.io) (gratuit jusqu'à 50 envois/mois) :
 
-Tant que ces URL sont vides, l'envoi ouvre la messagerie du visiteur avec la demande pré-remplie.
+1. Créer un formulaire sur Formspree, avec l'adresse e-mail de réception.
+2. Copier l'URL fournie (`https://formspree.io/f/xxxx`) dans `forms.contact` de `src/config.ts`.
+
+Tant que l'URL est vide, l'envoi ouvre la messagerie du visiteur avec la demande pré-remplie.
+
+## Publier un article (rubrique Conseils)
+
+Créer un fichier `src/content/conseils/mon-article.md` (le nom du fichier devient l'URL `/conseils/mon-article`) :
+
+```md
+---
+title: "Titre de l'article"
+description: "Résumé de 150 caractères environ, affiché dans Google."
+pubDate: 2026-11-15
+---
+
+Texte en Markdown, avec des sous-titres `## …` et des liens vers les pages du site.
+```
+
+Ajouter `draft: true` pour préparer un article sans le publier. Rebuild et redéploiement automatiques si le site est
+relié au dépôt Git (Netlify, Vercel…).
 
 ## Mise en ligne
 
@@ -55,8 +76,29 @@ Rechercher `TODO` dans le code. En résumé :
 - [ ] Adresse exacte du dépôt d'Orly
 - [ ] Capital social et hébergeur (mentions légales)
 - [ ] Valider le catalogue : modèles réellement vendus, états disponibles, caractéristiques
-- [ ] Valider la zone desservie et le délai de réponse annoncé (24 h ouvrées)
+- [ ] Valider la zone desservie et le délai de rappel annoncé (24 h ouvrées)
+- [ ] Relire les 3 articles de la rubrique Conseils (contenu technique à valider par l'équipe)
 - [ ] Remplacer le texte « Notre histoire » (`src/pages/a-propos.astro`)
 - [ ] Ajouter de vraies photos (dépôt, stock, camions) en complément des illustrations
 - [ ] Nom de domaine définitif
-- [ ] Après la mise en ligne : fiches Google Business Profile pour Champlan et Orly, déclaration du sitemap dans Google Search Console
+
+## SEO
+
+Déjà en place dans le code : titres et descriptions par page, URL lisibles, sitemap (`/sitemap-index.xml`),
+balises canoniques, données structurées (LocalBusiness, fil d'Ariane, FAQ, articles), pages locales par département,
+maillage interne, site statique très rapide, compatible mobile.
+
+À faire au lancement :
+
+- [ ] Créer une fiche **Google Business Profile** pour Champlan, puis pour Orly (catégorie « Fournisseur de palettes »)
+- [ ] Nom, adresse, téléphone **strictement identiques** partout : site, fiches Google, PagesJaunes, annuaires
+- [ ] Déclarer le site dans **Google Search Console** et **Bing Webmaster Tools**, envoyer le sitemap
+- [ ] Inscription dans les annuaires : PagesJaunes, Kompass, HelloPro, Europages, annuaires locaux (CCI Essonne…)
+- [ ] Photos réelles sur le site et sur les fiches Google (dépôt, stock, camions, équipe)
+
+Ensuite, en continu :
+
+- [ ] Demander un **avis Google** aux clients satisfaits (lien direct à envoyer par SMS ou e-mail)
+- [ ] Répondre à tous les avis
+- [ ] Publier un article par mois environ dans la rubrique Conseils, et une actualité/photo par semaine sur la fiche Google
+- [ ] Suivre les requêtes et les positions dans Search Console tous les mois

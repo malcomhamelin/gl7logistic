@@ -1,21 +1,35 @@
 ---
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import Base from '../../layouts/Base.astro';
 import PaletteCard from '../../components/PaletteCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { palettes, gradeInfo, type Grade } from '../../data/palettes';
+
+const groups: { title: string; text: string; grades: Grade[] }[] = [
+  {
+    title: 'Palettes Europe',
+    text: 'Classées en trois catégories selon leur état et leur propreté.',
+    grades: ['Pharma', '1er choix', '2e choix'],
+  },
+  {
+    title: 'Autres formats',
+    text: 'Demi-palettes, 100×120, palettes légères et hors standard.',
+    grades: ['Reconditionnée'],
+  },
+];
 ---
 
 <Base
-  title="Nos palettes bois : Europe, demi-palette, 100×120, NIMP 15"
-  description="Catalogue GL7 Logistic : palettes Europe 80×120 EPAL, demi-palettes 60×80, palettes 100×120, palettes légères, formats hors standard et palettes NIMP 15. Neuves, 1er choix, 2e choix ou reconditionnées."
+  title="Palettes bois d'occasion : Europe 80×120, demi-palette, 100×120"
+  description="Catalogue GL7 Logistic : palettes Europe 80×120 EPAL, demi-palettes 60×80, palettes 100×120, palettes légères, formats hors standard. Europe Pharma, 1er choix, 2e choix ; autres formats reconditionnés."
 >
   <section class="page-hero">
     <div class="container">
-      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Nos palettes</nav>
+      <Breadcrumb items={[{ label: 'Nos palettes' }]} />
       <h1>Nos palettes en bois</h1>
       <p class="lead">
-        Les principaux formats du marché, en neuf ou en occasion. Les prix dépendent du format, de l'état et des quantités :
-        demandez un devis, nous vous répondons rapidement.
+        Les principaux formats du marché, en occasion triée par état. Les prix dépendent du format, de l'état et des
+        quantités : appelez-nous pour en parler.
       </p>
     </div>
   </section>
@@ -31,23 +45,31 @@ import { palettes, gradeInfo, type Grade } from '../../data/palettes';
   <section class="section section-soft">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Neuf ou occasion</span>
+        <span class="eyebrow">Les états</span>
         <h2>Quel niveau de qualité choisir ?</h2>
-        <p>Les palettes d'occasion sont triées à leur arrivée au dépôt. Voici ce que recouvre chaque catégorie.</p>
+        <p>Chaque palette est contrôlée et triée à son arrivée au dépôt. Voici ce que recouvre chaque catégorie.</p>
       </div>
-      <div class="grid grid-4">
+      <div class="groups">
         {
-          (Object.keys(gradeInfo) as Grade[]).map((g) => (
-            <div class="card grade">
-              <span class="chip">{g}</span>
-              <p>{gradeInfo[g]}</p>
+          groups.map((group) => (
+            <div class="group">
+              <h3>{group.title}</h3>
+              <p class="group-text">{group.text}</p>
+              <div class="grades">
+                {group.grades.map((g) => (
+                  <div class="card grade">
+                    <span class="chip">{g}</span>
+                    <p>{gradeInfo[g]}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           ))
         }
       </div>
       <p class="note">
-        Vous ne savez pas quelle palette choisir ? Décrivez-nous vos produits et votre usage (stockage, transport, export) :
-        nous vous conseillons.
+        Vous ne savez pas quelle palette choisir ? Appelez-nous en nous décrivant vos produits et votre usage (stockage,
+        transport, livraison en grande distribution) : nous vous conseillons.
       </p>
     </div>
   </section>
@@ -56,9 +78,31 @@ import { palettes, gradeInfo, type Grade } from '../../data/palettes';
 </Base>
 
 <style>
+  .groups {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 32px;
+  }
+  .group h3 {
+    margin-bottom: 4px;
+  }
+  .group-text {
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .grades {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 16px;
+  }
   .grade p {
     margin: 14px 0 0;
     color: var(--muted);
+  }
+  @media (max-width: 960px) {
+    .groups {
+      grid-template-columns: 1fr;
+    }
   }
   .note {
     margin-top: 32px;

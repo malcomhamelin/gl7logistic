@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import Base from '../../layouts/Base.astro';
 import PaletteCard from '../../components/PaletteCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
@@ -22,15 +23,15 @@ const featured = palettes.filter((p) => p.featured).slice(0, 3);
 
 <Base
   title={`Palettes bois ${label} : vente, rachat, réparation`}
-  description={`Achat, vente, réparation et rachat de palettes bois ${zone.code === 'IDF' ? 'en' : 'dans le département'} ${label}. Palettes Europe, 60×80, 100×120, neuves et d'occasion. Livraison et enlèvement par GL7 Logistic.`}
+  description={`Achat, vente, réparation et rachat de palettes bois ${zone.code === 'IDF' ? 'en' : 'dans le département'} ${label}. Palettes d'occasion Europe, 60×80, 100×120. Livraison et enlèvement par GL7 Logistic.`}
 >
   <section class="page-hero">
     <div class="container">
-      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Zones / {zone.name}</nav>
+      <Breadcrumb items={[{ label: zone.name }]} />
       <h1>Palettes en bois : {label}</h1>
       <p class="lead">{zone.intro}</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="/devis">Demander un devis</a>
+        <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
         <a class="btn btn-ghost" href="/rachat-palettes">Vendre mes palettes</a>
       </div>
     </div>

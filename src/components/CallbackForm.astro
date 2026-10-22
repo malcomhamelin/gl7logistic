@@ -1,0 +1,118 @@
+---
+// Formulaire court « Être rappelé » : un numéro pour le rappel et une demande en texte libre.
+import { company, forms } from '../config';
+
+interface Props {
+  intent?: 'achat' | 'vente';
+}
+const { intent = 'achat' } = Astro.props;
+
+const placeholders = {
+  achat:
+    "Ex. : Nous cherchons environ 200 palettes Europe 80×120, 2e choix, livrées à Massy (91300), une fois par mois.",
+  vente:
+    "Ex. : Nous avons environ 80 palettes Europe en bon état et une trentaine de formats divers, à enlever à Rungis (94150).",
+};
+---
+
+<form
+  class="form"
+  data-gl7-form
+  data-endpoint={forms.contact}
+  data-email={company.email}
+  action={forms.contact || undefined}
+  method="post"
+>
+  <input type="hidden" name="_subject" value="" />
+  <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <fieldset class="field">
+    <legend>Votre demande</legend>
+    <div class="options">
+      <label class="option">
+        <input type="radio" name="demande" value="Acheter des palettes" checked={intent === 'achat'} data-intent="achat" />
+        <span>Je cherche des palettes</span>
+      </label>
+      <label class="option">
+        <input type="radio" name="demande" value="Vendre des palettes" checked={intent === 'vente'} data-intent="vente" />
+        <span>J'ai des palettes à vendre</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="c-nom">Nom <span class="req">*</span></label>
+      <input id="c-nom" name="nom" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="c-entreprise">Entreprise</label>
+      <input id="c-entreprise" name="entreprise" type="text" autocomplete="organization" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="c-tel">Téléphone pour vous rappeler <span class="req">*</span></label>
+      <input id="c-tel" name="telephone" type="tel" autocomplete="tel" required />
+    </div>
+    <div class="field">
+      <label for="c-email">E-mail</label>
+      <input id="c-email" name="email" type="email" autocomplete="email" />
+      <span class="hint">Facultatif</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="c-message">Votre demande <span class="req">*</span></label>
+    <span class="hint" id="c-message-hint">
+      Précisez le type de palettes, les <strong>quantités approximatives</strong>, la commune et, si c'est régulier, la
+      fréquence.
+    </span>
+    <textarea
+      id="c-message"
+      name="message"
+      required
+      rows="6"
+      aria-describedby="c-message-hint"
+      placeholder={placeholders[intent]}
+      data-placeholder-achat={placeholders.achat}
+      data-placeholder-vente={placeholders.vente}></textarea>
+  </div>
+
+  <label class="consent">
+    <input type="checkbox" name="consentement" value="oui" required />
+    <span>
+      J'accepte que mes informations soient utilisées pour me recontacter. Elles ne sont jamais revendues. <a
+        href="/mentions-legales#donnees">En savoir plus</a
+      >
+    </span>
+  </label>
+
+  <p class="form-status" role="status" aria-live="polite"></p>
+
+  <div>
+    <button class="btn btn-primary" type="submit">Être rappelé</button>
+  </div>
+</form>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+
+  const form = document.querySelector<HTMLFormElement>('form[data-gl7-form]');
+  const message = form?.querySelector<HTMLTextAreaElement>('#c-message');
+
+  // Le placeholder suit le type de demande (achat ou vente)
+  form?.querySelectorAll<HTMLInputElement>('input[name="demande"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (message && radio.checked) message.placeholder = message.dataset[`placeholder${radio.dataset.intent === 'vente' ? 'Vente' : 'Achat'}`] ?? '';
+    });
+  });
+
+  // Pré-remplissage depuis une fiche produit : /contact?produit=<nom>
+  const produit = new URLSearchParams(window.location.search).get('produit');
+  if (produit && message && !message.value) {
+    message.value = `Je suis intéressé par : ${produit}\nQuantité approximative : `;
+  }
+</script>

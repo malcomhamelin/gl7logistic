@@ -21,7 +21,9 @@ export const company = {
     { days: 'Lundi – Vendredi', time: '8h00 – 17h00' },
     { days: 'Samedi – Dimanche', time: 'Fermé' },
   ],
-  responseTime: '24 h ouvrées', // délai de réponse annoncé sur les devis
+  // Format schema.org pour Google (doit correspondre aux horaires ci-dessus et à la fiche Google Business Profile)
+  openingHours: ['Mo-Fr 08:00-17:00'], // TODO
+  responseTime: '24 h ouvrées', // délai de rappel annoncé
 
   depots: [
     {
@@ -51,10 +53,9 @@ export const company = {
   },
 };
 
-// Adresse d'envoi des formulaires (Formspree ou équivalent compatible).
+// Adresse d'envoi du formulaire de rappel (Formspree ou équivalent compatible).
 // Créer un formulaire sur https://formspree.io et coller ici l'URL fournie, ex. "https://formspree.io/f/abcdwxyz".
-// Tant que c'est vide, les formulaires affichent un message et proposent l'e-mail à la place.
+// Tant que c'est vide, l'envoi ouvre la messagerie du visiteur avec la demande pré-remplie.
 export const forms = {
-  quote: '',
-  buyback: '',
+  contact: '',
 };

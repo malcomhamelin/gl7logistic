@@ -7,8 +7,8 @@ interface Props {
   text?: string;
 }
 const {
-  title = 'Besoin de palettes ? Parlons-en.',
-  text = `Dites-nous ce qu'il vous faut : nous vous répondons sous ${company.responseTime} avec un prix adapté à vos volumes.`,
+  title = 'Le plus simple : appelez-nous.',
+  text = `Un coup de fil suffit pour faire le point sur vos besoins et vos quantités. Pas disponible ? Laissez votre numéro, nous vous rappelons sous ${company.responseTime}.`,
 } = Astro.props;
 ---
 
@@ -19,8 +19,8 @@ const {
       <p>{text}</p>
     </div>
     <div class="btn-row">
-      <a class="btn btn-light" href="/devis">Demander un devis <Icon name="arrow" size={18} /></a>
-      <a class="btn btn-outline-light" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+      <a class="btn btn-light" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+      <a class="btn btn-outline-light" href="/contact">Être rappelé</a>
     </div>
   </div>
 </section>

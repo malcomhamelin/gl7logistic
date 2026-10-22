@@ -1,0 +1,31 @@
+---
+// Fil d'Ariane visible + données structurées BreadcrumbList pour Google.
+interface Props {
+  items: { label: string; href?: string }[];
+}
+const { items } = Astro.props;
+const all = [{ label: 'Accueil', href: '/' }, ...items];
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.label,
+    item: new URL(item.href ?? Astro.url.pathname, Astro.site).href,
+  })),
+};
+---
+
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  {
+    all.map((item, i) => (
+      <>
+        {i > 0 && ' / '}
+        {item.href && i < all.length - 1 ? <a href={item.href}>{item.label}</a> : <span aria-current="page">{item.label}</span>}
+      </>
+    ))
+  }
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />

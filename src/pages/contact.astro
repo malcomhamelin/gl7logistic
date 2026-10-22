@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CallbackForm from '../components/CallbackForm.astro';
+import Icon from '../components/Icon.astro';
+import { company } from '../config';
+---
+
+<Base
+  title="Contact : appelez-nous ou demandez à être rappelé"
+  description="Contactez GL7 Logistic pour acheter ou vendre des palettes bois d'occasion en Île-de-France : par téléphone ou en laissant votre numéro pour être rappelé. Dépôts à Champlan (91) et Orly (94)."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Contact' }]} />
+      <h1>Parlons de vos palettes</h1>
+      <p class="lead">
+        Acheter ou vendre des palettes, le plus rapide reste un appel. Si vous préférez, laissez-nous votre numéro et
+        quelques mots sur votre besoin : nous vous rappelons.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="main">
+        <a class="call card" href={company.phoneHref}>
+          <span class="icon-badge"><Icon name="phone" /></span>
+          <span class="call-text">
+            <span class="call-label">Appelez-nous</span>
+            <span class="call-number">{company.phone}</span>
+            <span class="call-hours">{company.hours[0].days}, {company.hours[0].time}</span>
+          </span>
+          <span class="btn btn-primary">Appeler</span>
+        </a>
+
+        <div class="card form-card" id="rappel">
+          <h2>Ou demandez à être rappelé</h2>
+          <p class="muted">Nous vous rappelons sous {company.responseTime} pour faire le point sur votre demande.</p>
+          <CallbackForm />
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <h2>Coordonnées</h2>
+          <ul class="contact">
+            <li>
+              <Icon name="phone" />
+              <span><a href={company.phoneHref}>{company.phone}</a></span>
+            </li>
+            <li>
+              <Icon name="mail" />
+              <span><a href={`mailto:${company.email}`}>{company.email}</a></span>
+            </li>
+            <li>
+              <Icon name="clock" />
+              <span>{company.hours.map((h) => (<>{h.days} : {h.time}<br /></>))}</span>
+            </li>
+          </ul>
+        </div>
+        {
+          company.depots.map((d) => (
+            <div class="card">
+              <h3>{d.name}</h3>
+              <p>
+                {d.street && (<>{d.street}<br /></>)}
+                {d.postalCode} {d.city}
+              </p>
+              <a class="maps" href={d.mapsUrl} target="_blank" rel="noopener">
+                Ouvrir dans Google Maps <Icon name="arrow" size={16} />
+              </a>
+            </div>
+          ))
+        }
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+    align-items: start;
+  }
+  .main {
+    display: grid;
+    gap: 24px;
+  }
+  .call {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+    color: inherit;
+    background: var(--grad-soft);
+    border-color: #ddd3fb;
+  }
+  .call .icon-badge {
+    margin: 0;
+    background: var(--grad);
+    color: #fff;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    flex: none;
+  }
+  .call-text {
+    display: grid;
+    flex: 1;
+  }
+  .call-label {
+    font-weight: 700;
+    color: var(--ink-2);
+  }
+  .call-number {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .call-hours {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .form-card {
+    padding: clamp(24px, 4vw, 40px);
+    scroll-margin-top: 96px;
+  }
+  .form-card h2 {
+    font-size: 1.5rem;
+  }
+  .muted {
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .side {
+    display: grid;
+    gap: 20px;
+  }
+  .side .card {
+    padding: 24px;
+  }
+  .side h2 {
+    font-size: 1.2rem;
+  }
+  .contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .contact li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .contact :global(svg) {
+    color: var(--violet);
+    flex: none;
+  }
+  .contact a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    word-break: break-word;
+  }
+  .side p {
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .maps {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .call .btn {
+      display: none;
+    }
+  }
+</style>

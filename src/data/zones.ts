@@ -26,7 +26,7 @@ export const zones: Zone[] = [
     code: '94',
     depot: 'Orly',
     intro:
-      "Notre dépôt d'Orly nous place à côté de Rungis, de l'aéroport et des grandes plateformes logistiques du Val-de-Marne. Nous servons les entrepôts, commerces et industriels du département en palettes neuves et d'occasion, et nous rachetons leurs palettes inutilisées.",
+      "Notre dépôt d'Orly nous place à côté de Rungis, de l'aéroport et des grandes plateformes logistiques du Val-de-Marne. Nous servons les entrepôts, commerces et industriels du département en palettes d'occasion, et nous rachetons leurs palettes inutilisées.",
     towns: ['Orly', 'Rungis', 'Thiais', 'Chevilly-Larue', 'Choisy-le-Roi', 'Villeneuve-le-Roi', 'Vitry-sur-Seine', 'Ivry-sur-Seine', 'Créteil', 'Bonneuil-sur-Marne', 'Valenton', 'Sucy-en-Brie'],
   },
   {

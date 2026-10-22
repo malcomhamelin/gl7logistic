@@ -13,7 +13,7 @@ const services = [
   {
     icon: 'pallet',
     title: 'Vente de palettes',
-    text: "Palettes neuves et d'occasion, Europe, demi-palettes, 100×120, formats spéciaux. À l'unité ou au camion complet.",
+    text: "Palettes d'occasion triées par état : Europe, demi-palettes, 100×120, formats spéciaux. À l'unité ou au camion complet.",
     href: '/services#vente',
   },
   {
@@ -37,32 +37,32 @@ const services = [
 ] as const;
 
 const steps = [
-  { n: '1', title: 'Vous nous décrivez votre besoin', text: 'Par le formulaire ou par téléphone : type de palette, quantité, lieu et délai.' },
-  { n: '2', title: 'Nous vous envoyons un devis', text: `Un prix clair, adapté à vos volumes, sous ${company.responseTime}.` },
+  { n: '1', title: 'Vous nous appelez', text: `Ou vous laissez votre numéro avec quelques mots sur votre besoin : nous vous rappelons sous ${company.responseTime}.` },
+  { n: '2', title: 'On fait le point ensemble', text: 'Type de palettes, quantités, lieu et délai : nous vous proposons un prix adapté à vos volumes.' },
   { n: '3', title: 'Livraison ou enlèvement', text: 'Nous livrons vos palettes ou venons récupérer les vôtres, à la date convenue.' },
 ];
 ---
 
 <Base
-  title="GL7 Logistic | Palettes bois neuves et d'occasion en Île-de-France"
-  description="Achat, vente, réparation et rachat de palettes en bois : Europe 80×120, demi-palettes, 100×120, NIMP 15. Dépôts à Champlan (91) et Orly (94). Devis rapide."
+  title="GL7 Logistic | Palettes bois d'occasion en Essonne et Île-de-France"
+  description="Achat, vente, réparation et rachat de palettes bois d'occasion : Europe 80×120, EPAL, demi-palettes, 100×120. Dépôts à Champlan (91) et Orly (94). Appelez-nous."
 >
   <!-- Hero -->
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Palettes bois · Essonne &amp; Val-de-Marne</span>
-        <h1>Vos palettes en bois, <span class="grad-text">neuves ou d'occasion</span>, livrées en Île-de-France.</h1>
+        <h1>Palettes bois <span class="grad-text">d'occasion</span> en <span class="nowrap">Île-de-France</span></h1>
         <p class="lead">
-          GL7 Logistic achète, vend, répare et rachète des palettes pour les professionnels. Deux dépôts au sud de Paris,
-          à Champlan et à Orly, pour vous livrer vite.
+          Achat, vente, réparation et rachat de palettes pour les professionnels. Des palettes triées par état, et deux
+          dépôts au sud de Paris, à Champlan et à Orly, pour vous livrer et venir chercher vos palettes rapidement.
         </p>
         <div class="btn-row">
-          <a class="btn btn-primary" href="/devis">Demander un devis <Icon name="arrow" size={18} /></a>
-          <a class="btn btn-ghost" href="/rachat-palettes">Vendre mes palettes</a>
+          <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+          <a class="btn btn-ghost" href="/contact">Être rappelé</a>
         </div>
         <ul class="hero-points">
-          <li><Icon name="clock" size={18} /> Réponse sous {company.responseTime}</li>
+          <li><Icon name="clock" size={18} /> Rappel sous {company.responseTime}</li>
           <li><Icon name="tag" size={18} /> Prix dégressifs selon volume</li>
           <li><Icon name="truck" size={18} /> Livraison et enlèvement</li>
         </ul>
@@ -72,8 +72,8 @@ const steps = [
         <div class="hero-blob"></div>
         <PalletArt length={1200} width={800} stack={3} class="hero-stack" />
         <span class="float f1"><Icon name="shield" size={16} /> EPAL</span>
-        <span class="float f2"><Icon name="globe" size={16} /> NIMP 15</span>
-        <span class="float f3"><Icon name="cycle" size={16} /> Neuf &amp; occasion</span>
+        <span class="float f2"><Icon name="wrench" size={16} /> Réparées</span>
+        <span class="float f3"><Icon name="cycle" size={16} /> Achat &amp; rachat</span>
       </div>
     </div>
   </section>
@@ -85,8 +85,8 @@ const steps = [
         <span class="icon-badge"><Icon name="pallet" /></span>
         <h2>Vous cherchez des palettes ?</h2>
         <p>
-          Palettes Europe, demi-palettes, 100×120, palettes légères ou formats spéciaux, en neuf ou en occasion trié.
-          Nous trouvons la palette qui correspond à votre usage et à votre budget.
+          Palettes Europe, demi-palettes, 100×120, palettes légères ou formats spéciaux, triées par état. Nous trouvons la
+          palette qui correspond à votre usage et à votre budget.
         </p>
         <span class="link">Voir nos palettes <Icon name="arrow" size={18} /></span>
       </a>
@@ -109,7 +109,7 @@ const steps = [
         <div class="section-head">
           <span class="eyebrow">Nos palettes</span>
           <h2>Les formats les plus demandés</h2>
-          <p>Chaque palette d'occasion est triée selon son état. Vous choisissez le niveau de qualité dont vous avez besoin.</p>
+          <p>Chaque palette est triée selon son état. Vous choisissez le niveau de qualité dont vous avez besoin.</p>
         </div>
         <a class="btn btn-ghost" href="/palettes">Tout le catalogue</a>
       </div>
@@ -148,7 +148,7 @@ const steps = [
     <div class="container">
       <div class="section-head center">
         <span class="eyebrow">Comment ça marche</span>
-        <h2>Un devis en trois étapes</h2>
+        <h2>Un appel, et c'est parti</h2>
       </div>
       <ol class="steps">
         {
@@ -162,7 +162,10 @@ const steps = [
         }
       </ol>
       <div class="center-row">
-        <a class="btn btn-primary" href="/devis">Commencer ma demande <Icon name="arrow" size={18} /></a>
+        <div class="btn-row center">
+          <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> Appeler le {company.phone}</a>
+          <a class="btn btn-ghost" href="/contact">Être rappelé</a>
+        </div>
       </div>
     </div>
   </section>
@@ -178,7 +181,7 @@ const steps = [
           remises sur le marché, revendues telles quelles ou après réparation.
         </p>
         <ul class="check-list">
-          <li>Des palettes d'occasion nettement moins chères que le neuf</li>
+          <li>Des palettes d'occasion nettement moins chères qu'une palette neuve</li>
           <li>Moins de bois neuf consommé, moins de déchets sur vos sites</li>
           <li>Les palettes irréparables sont orientées vers le recyclage</li>
         </ul>
@@ -402,8 +405,8 @@ const steps = [
     color: var(--muted);
     margin: 0;
   }
-  .center-row {
-    text-align: center;
+  .btn-row.center {
+    justify-content: center;
   }
 
   .circular {

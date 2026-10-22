@@ -23,7 +23,7 @@ const { length, width } = palette.dimensions;
   </div>
   <div class="foot">
     <a class="more" href={`/palettes/${palette.slug}`}>Voir la fiche <Icon name="arrow" size={16} /></a>
-    <a class="btn btn-ghost btn-sm" href={`/devis?produit=${palette.slug}`}>Devis</a>
+    <a class="btn btn-ghost btn-sm" href={`/contact?produit=${encodeURIComponent(palette.name)}`}>Être rappelé</a>
   </div>
 </article>
 

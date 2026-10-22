@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+
+const articles = (await getCollection('conseils', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+const fmt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' });
+---
+
+<Base
+  title="Conseils et guides sur les palettes bois"
+  description="Guides pratiques sur les palettes bois d'occasion : reconnaître une palette EPAL, choisir entre Pharma, 1er et 2e choix, que faire de ses palettes usagées. Par GL7 Logistic."
+>
+  <section class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Conseils' }]} />
+      <h1>Conseils et guides</h1>
+      <p class="lead">Tout ce qu'il faut savoir pour bien acheter, utiliser et revendre vos palettes en bois.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {
+          articles.map((a) => (
+            <article class="card post">
+              <time datetime={a.data.pubDate.toISOString()}>{fmt.format(a.data.pubDate)}</time>
+              <h2>
+                <a href={`/conseils/${a.id}`}>{a.data.title}</a>
+              </h2>
+              <p>{a.data.description}</p>
+              <a class="more" href={`/conseils/${a.id}`} aria-hidden="true" tabindex="-1">
+                Lire l'article <Icon name="arrow" size={16} />
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .post {
+    display: flex;
+    flex-direction: column;
+  }
+  time {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .post h2 {
+    font-size: 1.25rem;
+  }
+  .post h2 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .post h2 a:hover {
+    color: var(--violet);
+  }
+  .post p {
+    color: var(--muted);
+    flex: 1;
+  }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>

@@ -5,14 +5,14 @@ import { company } from '../config';
 
 const nav = [
   { href: '/palettes', label: 'Nos palettes' },
-  { href: '/services', label: 'Services' },
   { href: '/rachat-palettes', label: 'Rachat de palettes' },
-  { href: '/zones/ile-de-france', label: "Zone d'intervention" },
+  { href: '/services', label: 'Services' },
+  { href: '/conseils', label: 'Conseils' },
   { href: '/a-propos', label: 'À propos' },
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '');
-const isActive = (href: string) => path === href || path.startsWith(href + '/') || (href.startsWith('/zones') && path.startsWith('/zones'));
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
 ---
 
 <header class="site-header">
@@ -34,11 +34,11 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/') 
     </nav>
 
     <div class="actions">
-      <a class="phone" href={company.phoneHref} aria-label={`Appeler le ${company.phone}`}>
+      <a class="callback" href="/contact">Être rappelé</a>
+      <a class="btn btn-primary btn-sm phone" href={company.phoneHref} aria-label={`Appeler le ${company.phone}`}>
         <Icon name="phone" size={18} />
         <span>{company.phone}</span>
       </a>
-      <a class="btn btn-primary btn-sm" href="/devis">Demander un devis</a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
         <Icon name="menu" class="i-open" />
         <Icon name="close" class="i-close" />
@@ -60,8 +60,8 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/') 
         }
       </ul>
       <div class="mobile-cta">
-        <a class="btn btn-primary" href="/devis">Demander un devis</a>
-        <a class="btn btn-ghost" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+        <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> Appeler le {company.phone}</a>
+        <a class="btn btn-ghost" href="/contact">Être rappelé</a>
       </div>
     </div>
   </div>
@@ -124,16 +124,14 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/') 
     align-items: center;
     gap: 16px;
   }
-  .phone {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 750;
+  .callback {
+    font-weight: 700;
+    font-size: 0.95rem;
     color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
   }
-  .phone svg {
+  .callback:hover {
     color: var(--violet);
   }
   .burger {
@@ -176,14 +174,13 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/') 
     gap: 10px;
   }
 
-  @media (max-width: 1180px) {
-    .phone span {
+  @media (max-width: 1100px) {
+    .callback {
       display: none;
     }
   }
   @media (max-width: 1020px) {
-    .nav,
-    .phone {
+    .nav {
       display: none;
     }
     .burger {
@@ -191,7 +188,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/') 
     }
   }
   @media (max-width: 480px) {
-    .actions .btn {
+    .actions .phone {
       display: none;
     }
   }

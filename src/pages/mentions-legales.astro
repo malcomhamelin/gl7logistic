@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from '../components/Breadcrumb.astro';
 import Base from '../layouts/Base.astro';
 import { company } from '../config';
 
@@ -8,7 +9,7 @@ const siege = company.depots[0];
 <Base title="Mentions légales et données personnelles" description="Mentions légales du site GL7 Logistic et politique de protection des données personnelles.">
   <section class="page-hero">
     <div class="container">
-      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Mentions légales</nav>
+      <Breadcrumb items={[{ label: 'Mentions légales' }]} />
       <h1>Mentions légales</h1>
     </div>
   </section>

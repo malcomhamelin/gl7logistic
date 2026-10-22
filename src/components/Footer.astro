@@ -13,10 +13,10 @@ const year = new Date().getFullYear();
     <div class="brand">
       <Logo inverted />
       <p>
-        Achat, vente, réparation et rachat de palettes en bois pour les professionnels d'Île-de-France. Dépôts à
-        Champlan (91) et Orly (94).
+        Achat, vente, réparation et rachat de palettes en bois d'occasion pour les professionnels d'Île-de-France. Dépôts
+        à Champlan (91) et Orly (94).
       </p>
-      <a class="btn btn-primary btn-sm" href="/devis">Demander un devis</a>
+      <a class="btn btn-primary btn-sm" href={company.phoneHref}><Icon name="phone" size={16} /> {company.phone}</a>
     </div>
 
     <div>
@@ -33,8 +33,9 @@ const year = new Date().getFullYear();
         <li><a href="/rachat-palettes">Rachat et enlèvement</a></li>
         <li><a href="/services#reparation">Réparation, reconditionnement</a></li>
         <li><a href="/services#livraison">Livraison</a></li>
+        <li><a href="/conseils">Conseils et guides</a></li>
       </ul>
-      <h2 class="mt">Zones</h2>
+      <h2 class="mt">Zones desservies</h2>
       <ul>
         {zones.map((z) => <li><a href={`/zones/${z.slug}`}>Palettes {z.name}</a></li>)}
       </ul>

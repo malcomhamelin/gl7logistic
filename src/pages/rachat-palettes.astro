@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import BuybackForm from '../components/BuybackForm.astro';
+import CallbackForm from '../components/CallbackForm.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import Icon from '../components/Icon.astro';
 import { company } from '../config';
 
@@ -11,7 +12,7 @@ const faq = [
   },
   {
     q: 'Combien vaut une palette ?',
-    a: "Le prix dépend du format, du marquage (EPAL ou non), de l'état et de la quantité. Une palette EPAL en bon état se rachète mieux qu'une palette non marquée ou abîmée. Nous vous faisons une proposition après description ou photos.",
+    a: "Le prix dépend du format, du marquage (EPAL ou non), de l'état et de la quantité. Une palette EPAL en bon état se rachète mieux qu'une palette non marquée ou abîmée. Appelez-nous avec une estimation des quantités : nous vous faisons une proposition, éventuellement après photos.",
   },
   {
     q: 'Reprenez-vous les palettes abîmées ?',
@@ -19,7 +20,7 @@ const faq = [
   },
   {
     q: 'Faut-il une quantité minimum ?',
-    a: "L'enlèvement sur site est organisé à partir d'un certain volume, qui dépend de votre localisation. En dessous, vous pouvez déposer vos palettes à Champlan ou à Orly. Contactez-nous pour en parler.",
+    a: "L'enlèvement sur site est organisé à partir d'un certain volume, qui dépend de votre localisation. En dessous, vous pouvez déposer vos palettes à Champlan ou à Orly. Appelez-nous pour en parler.",
   },
 ];
 
@@ -32,26 +33,33 @@ const faqLd = {
 
 <Base
   title="Rachat et enlèvement de palettes usagées en Île-de-France"
-  description="Vous avez des palettes en trop ? GL7 Logistic rachète et enlève vos palettes Europe, EPAL, 60×80, 100×120 en Essonne, Val-de-Marne et Île-de-France. Proposition rapide."
+  description="Vous avez des palettes en trop ? GL7 Logistic rachète et enlève vos palettes Europe, EPAL, 60×80, 100×120 en Essonne, Val-de-Marne et Île-de-France. Appelez-nous."
   jsonLd={faqLd}
 >
   <section class="page-hero">
     <div class="container">
-      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / Rachat de palettes</nav>
+      <Breadcrumb items={[{ label: 'Rachat de palettes' }]} />
       <h1>Vous avez des palettes en trop ? <span class="grad-text">On les rachète.</span></h1>
       <p class="lead">
         Entrepôts, commerces, industriels, chantiers : nous rachetons et enlevons vos palettes vides en Essonne, dans le
         Val-de-Marne et en Île-de-France.
       </p>
+      <div class="btn-row hero-cta">
+        <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> Appeler le {company.phone}</a>
+        <a class="btn btn-ghost" href="#rappel">Être rappelé</a>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container layout">
-      <div class="card form-card">
-        <h2>Décrivez vos palettes</h2>
-        <p class="muted">Nous revenons vers vous avec une proposition sous {company.responseTime}.</p>
-        <BuybackForm />
+      <div class="card form-card" id="rappel">
+        <h2>Laissez-nous votre numéro</h2>
+        <p class="muted">
+          Indiquez les types de palettes, les quantités approximatives et la commune d'enlèvement. Nous vous rappelons sous
+          {company.responseTime} avec une proposition.
+        </p>
+        <CallbackForm intent="vente" />
       </div>
 
       <aside class="side">
@@ -65,8 +73,8 @@ const faqLd = {
           </ul>
         </div>
         <div class="card call">
-          <h3>Plus rapide par téléphone ?</h3>
-          <a class="btn btn-ghost" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
+          <h3>Plus rapide par téléphone</h3>
+          <a class="btn btn-primary" href={company.phoneHref}><Icon name="phone" size={18} /> {company.phone}</a>
         </div>
       </aside>
     </div>
@@ -101,6 +109,10 @@ const faqLd = {
   }
   .form-card {
     padding: clamp(24px, 4vw, 40px);
+    scroll-margin-top: 96px;
+  }
+  .hero-cta {
+    margin-top: 24px;
   }
   .muted {
     color: var(--muted);

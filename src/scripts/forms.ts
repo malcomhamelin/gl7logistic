@@ -24,7 +24,11 @@ export function initForms() {
       if (!form.reportValidity()) return;
 
       const endpoint = form.dataset.endpoint;
-      const subject = form.dataset.subject ?? 'Demande depuis le site';
+      const demande = form.querySelector<HTMLInputElement>('input[name="demande"]:checked')?.value;
+      const nom = form.querySelector<HTMLInputElement>('input[name="nom"]')?.value;
+      const subject = `Rappel demandé${demande ? ` – ${demande}` : ''}${nom ? ` – ${nom}` : ''}`;
+      const subjectField = form.querySelector<HTMLInputElement>('input[name="_subject"]');
+      if (subjectField) subjectField.value = subject;
       const email = form.dataset.email ?? '';
 
       if (!endpoint) {
@@ -49,7 +53,7 @@ export function initForms() {
           headers: { Accept: 'application/json' },
         });
         if (!res.ok) throw new Error(String(res.status));
-        window.location.href = `/merci?type=${form.dataset.kind ?? 'devis'}`;
+        window.location.href = '/merci';
       } catch {
         if (status) {
           status.className = 'form-status error';

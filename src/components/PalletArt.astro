@@ -1,15 +1,21 @@
 ---
 // Illustration isométrique d'une palette, construite à l'échelle à partir de ses dimensions (mm).
+//  - euro  : palette Europe / EPAL, la plus massive (gros dés, planches épaisses)
+//  - block : construction standard plus fine (100×120, formats hors standard)
+//  - light : palette légère (perdue)
+//  - half  : demi-palette = palette légère coupée en deux, planches dans le sens de la largeur
+import type { Build } from '../data/palettes';
+
 interface Props {
   length?: number;
   width?: number;
-  build?: 'block' | 'light';
+  build?: Build;
   stack?: number;
   class?: string;
   label?: string;
 }
 
-const { length = 1200, width = 800, build = 'block', stack = 1, class: className, label } = Astro.props;
+const { length = 1200, width = 800, build = 'euro', stack = 1, class: className, label } = Astro.props;
 
 type Box = { x: number; y: number; z: number; w: number; d: number; h: number; layer: number };
 
@@ -19,28 +25,37 @@ const project = (x: number, y: number, z: number): [number, number] => [(x - y) 
 
 function pallet(L: number, W: number, z0: number): { boxes: Box[]; height: number } {
   const boxes: Box[] = [];
-  const add = (b: Omit<Box, 'z'> & { z: number }) => boxes.push({ ...b, z: b.z + z0 });
-  const light = build === 'light';
-  const t = light ? 15 : 22;
-  const bh = light ? 90 : 78;
-  const bx = light ? 100 : 145;
-  const by = 100;
-  const xs = [0, (L - bx) / 2, L - bx];
-  const ys = [0, (W - by) / 2, W - by];
+  // Sur la demi-palette, semelles et planches de dessus vont dans le sens de la largeur :
+  // on construit dans un repère (a = sens des planches, b = travers) puis on fait pivoter.
+  const turn = build === 'half';
+  const A = turn ? W : L;
+  const B = turn ? L : W;
+  const add = (a: number, b: number, z: number, wa: number, db: number, h: number, layer: number) =>
+    boxes.push(
+      turn
+        ? { x: b, y: a, z: z + z0, w: db, d: wa, h, layer }
+        : { x: a, y: b, z: z + z0, w: wa, d: db, h, layer },
+    );
+
+  // Gabarits (mm) : dés (ba × bb × bh), semelles (sw × st), traverses (t), planches de dessus (n × tw × tt)
+  const spec = {
+    euro: { ba: 145, bb: 130, bh: 78, sw: 110, st: 22, t: 22, n: 5, tw: 120, tt: 22 },
+    block: { ba: 95, bb: 90, bh: 78, sw: 90, st: 18, t: 18, n: 6, tw: 90, tt: 18 },
+    light: { ba: 90, bb: 85, bh: 78, sw: 80, st: 12, t: 15, n: 4, tw: 90, tt: 12 },
+  }[build === 'half' ? 'light' : build];
+  const { ba, bb, bh, sw, st, t, n, tw, tt } = spec;
+  const as = [0, (A - ba) / 2, A - ba];
+  const bs = [0, (B - bb) / 2, B - bb];
   let z = 0;
 
-  if (!light) {
-    ys.forEach((y) => add({ x: 0, y, z, w: L, d: by, h: t, layer: 0 }));
-    z += t;
-  }
-  xs.forEach((x) => ys.forEach((y) => add({ x, y, z, w: bx, d: by, h: bh, layer: 1 })));
+  // Semelles : 3 planches au sol dans le sens des planches de dessus
+  bs.forEach((b) => add(0, b + (bb - sw) / 2, z, A, sw, st, 0));
+  z += st;
+  as.forEach((a) => bs.forEach((b) => add(a, b, z, ba, bb, bh, 1)));
   z += bh;
-  xs.forEach((x) => add({ x, y: 0, z, w: bx, d: W, h: t, layer: 2 }));
+  as.forEach((a) => add(a, 0, z, ba, B, t, 2));
   z += t;
-  const n = light ? 4 : 5;
-  const tw = light ? 90 : 100;
-  const tt = light ? 12 : 22;
-  for (let i = 0; i < n; i++) add({ x: 0, y: (i * (W - tw)) / (n - 1), z, w: L, d: tw, h: tt, layer: 3 });
+  for (let i = 0; i < n; i++) add(0, (i * (B - tw)) / (n - 1), z, A, tw, tt, 3);
   z += tt;
   return { boxes, height: z };
 }
